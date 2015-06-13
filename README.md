@@ -1,5 +1,8 @@
 # wormbase-alfred
+
 An alfred extension for wormbase!
+
+### [Download the latest release](https://github.com/danielecook/wormbase-alfred/releases/latest)
 
 ## Usage
 
