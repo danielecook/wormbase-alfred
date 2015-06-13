@@ -63,7 +63,7 @@ def main(wf):
             # Description
             desc = rest("gene/{WBID}/concise_description".format(WBID=row[0]))
             desc = desc["concise_description"]["data"]["text"]
-            wf.add_item(desc,"Description", arg=row[1], valid=True, icon="icon.png")
+            wf.add_item(desc,"Description",  valid=False, icon="icon.png")
 
             # Orthologs
             q = '''SELECT * FROM orthodb WHERE WBID == "{WBID}" ORDER BY sequence ASC LIMIT 50 '''.format(WBID=row["WBID"])
@@ -79,20 +79,34 @@ def main(wf):
             pub = rest("gene/{WBID}/references".format(WBID=row[0]))
             for i in pub["references"]["data"]:
                 first_author = i["author"][0]["label"]
-                journal = i["journal"][0]
-                year = i["year"]
                 pub_id = i["name"]["id"]
-                if "volume" in i:
+                colsep = ""
+                try:
+                    journal = i["journal"][0]
+                except:
+                    journal = ""
+                try:
                     volume = i["volume"][0]
+                except:
+                    volume = ""
+                try:
                     page = i["page"][0]
                     colsep = ":"
-                else:
-                    volume = ""
+                except:
                     page = ""
-                    colsep = ""
+                try:
+                    year = i["year"]
+                except:
+                    year = "-"
+                try:
+                    title = i["title"][0]
+                except:
+                    title = ""
+
+
                 URL = "http://www.wormbase.org/resources/paper/" + pub_id
                 subtitle = "{first_author} et al. {journal} {volume}{colsep} {page} ({year})".format(**locals())
-                wf.add_item(i["title"][0], subtitle, arg=URL, valid=True, icon="document.png")
+                wf.add_item(title, subtitle, arg=URL, valid=True, icon="document.png")
 
 
 
