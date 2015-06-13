@@ -51,9 +51,9 @@ def main(wf):
             wf.add_item("Dead ID",row["match"], valid=False, icon="death.png")
         else:
             wormbase_url = "http://www.wormbase.org/species/c_elegans/gene/" + row["WBID"]
-            wf.add_item(row["sequence"],"Public Name", arg=wormbase_url, valid=True, icon="icon.png")
-            wf.add_item(row["gene"],"Gene Name", arg=wormbase_url, valid=True, icon="icon.png")
-            wf.add_item(row["WBID"],"Wormbase ID", arg=wormbase_url, valid=True, icon="icon.png")
+            wf.add_item(row["sequence"],"Public Name", arg=wormbase_url, copytext=row["sequence"], valid=True, icon="icon.png")
+            wf.add_item(row["gene"],"Gene Name", arg=wormbase_url, copytext=row["gene"], valid=True, icon="icon.png")
+            wf.add_item(row["WBID"],"Wormbase ID", arg=wormbase_url, copytext=row["WBID"], valid=True, icon="icon.png")
             # Position
             pos = rest("gene/{WBID}/location".format(WBID=row[0]))
             pos = pos["location"]["genomic_position"]["data"][0]["label"]
@@ -73,7 +73,7 @@ def main(wf):
                 ortho_title = "{ortho_name} ({species})".format(ortho_name=ortholog["ortholog_name"], 
                                                                 species = ortholog["species"])
                 ortholog_link = "http://www.wormbase.org/db/get?name={ortholog};class=Gene".format(ortholog=ortholog["ortholog"])
-                wf.add_item(ortho_title,"Ortholog - " + ortholog["ortholog"], arg=ortholog_link, valid=True, icon="ortholog.png")
+                wf.add_item(ortho_title,"Ortholog - " + ortholog["ortholog"], arg=ortholog_link, copytext=ortho_title, valid=True, icon="ortholog.png")
 
             # Publications
             pub = rest("gene/{WBID}/references".format(WBID=row[0]))
@@ -106,7 +106,7 @@ def main(wf):
 
                 URL = "http://www.wormbase.org/resources/paper/" + pub_id
                 subtitle = "{first_author} et al. {journal} {volume}{colsep} {page} ({year})".format(**locals())
-                wf.add_item(title, subtitle, arg=URL, valid=True, icon="document.png")
+                wf.add_item(title, subtitle, arg=URL, valid=True, copytext=title, icon="document.png")
 
 
 
