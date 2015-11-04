@@ -10,6 +10,7 @@ import urllib2
 import json
 import difflib
 
+__version__ = "0.2"
 log = None
 
 def rest(url):
@@ -77,31 +78,32 @@ def main(wf):
 
             # Publications
             pub = rest("gene/{WBID}/references".format(WBID=row[0]))
-            for i in pub["references"]["data"]:
-                first_author = i["author"][0]["label"]
-                pub_id = i["name"]["id"]
-                colsep = ""
-                try:
-                    journal = i["journal"][0]
-                except:
-                    journal = ""
-                try:
-                    volume = i["volume"][0]
-                except:
-                    volume = ""
-                try:
-                    page = i["page"][0]
-                    colsep = ":"
-                except:
-                    page = ""
-                try:
-                    year = i["year"]
-                except:
-                    year = "-"
-                try:
-                    title = i["title"][0]
-                except:
-                    title = ""
+            if pub["references"]["data"] is not None:
+                for i in pub["references"]["data"]:
+                    first_author = i["author"][0]["label"]
+                    pub_id = i["name"]["id"]
+                    colsep = ""
+                    try:
+                        journal = i["journal"][0]
+                    except:
+                        journal = ""
+                    try:
+                        volume = i["volume"][0]
+                    except:
+                        volume = ""
+                    try:
+                        page = i["page"][0]
+                        colsep = ":"
+                    except:
+                        page = ""
+                    try:
+                        year = i["year"]
+                    except:
+                        year = "-"
+                    try:
+                        title = i["title"][0]
+                    except:
+                        title = ""
 
 
                 URL = "http://www.wormbase.org/resources/paper/" + pub_id
@@ -118,7 +120,10 @@ def main(wf):
 
 
 if __name__ == '__main__':
-    wf = Workflow()
+    wf = Workflow(update_settings={
+        'github_slug': 'danielecook/wormbase-alfred',
+        'version': __version__,
+        'frequency': 7)
     # Assign Workflow logger to a global variable, so all module
     # functions can access it without having to pass the Workflow
     # instance around
