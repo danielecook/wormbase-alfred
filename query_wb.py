@@ -123,7 +123,7 @@ if __name__ == '__main__':
     wf = Workflow(update_settings={
         'github_slug': 'danielecook/wormbase-alfred',
         'version': __version__,
-        'frequency': 7)
+        'frequency': 7})
     # Assign Workflow logger to a global variable, so all module
     # functions can access it without having to pass the Workflow
     # instance around
